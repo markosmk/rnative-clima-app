@@ -1,13 +1,35 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
   TextInput,
   StyleSheet,
   TouchableWithoutFeedback,
+  Animated,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+
 const Formulario = () => {
+  const [animaBtn] = useState(new Animated.Value(1));
+
+  const animaIn = () => {
+    // agregando animacion al hacer click
+    Animated.spring(animaBtn, {
+      toValue: 0.9,
+    }).start();
+  };
+  const animaOut = () => {
+    Animated.spring(animaBtn, {
+      toValue: 1,
+      friction: 4, // el rebote
+      tension: 30,
+    }).start();
+  };
+
+  const styleAnima = {
+    transform: [{ scale: animaBtn }],
+  };
+
   return (
     <>
       <View style={styles.form}>
@@ -29,10 +51,10 @@ const Formulario = () => {
           <Picker.Item label="España" value="ES" />
         </Picker>
       </View>
-      <TouchableWithoutFeedback>
-        <View style={styles.btnSearch}>
+      <TouchableWithoutFeedback onPressIn={() => animaIn()} onPressOut={() => animaOut()}>
+        <Animated.View style={[styles.btnSearch, styleAnima]}>
           <Text style={styles.btnText}>Buscar Clima</Text>
-        </View>
+        </Animated.View>
       </TouchableWithoutFeedback>
     </>
   );

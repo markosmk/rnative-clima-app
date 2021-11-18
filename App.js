@@ -1,15 +1,28 @@
 import React from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import Formulario from './components/Formulario';
 
 export default function App() {
+  const offKeyboard = () => {
+    Keyboard.dismiss();
+  };
+
   return (
     <>
-      <View style={styles.app}>
-        <View style={styles.container}>
-          <Formulario />
+      <TouchableWithoutFeedback onPress={() => offKeyboard()}>
+        <View style={styles.app}>
+          <View style={styles.container}>
+            <Formulario />
+          </View>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </>
   );
 }
