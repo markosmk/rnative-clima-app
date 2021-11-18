@@ -9,6 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import Formulario from './components/Formulario';
+import Clima from './components/Clima';
 
 export default function App() {
   const [search, setSearch] = useState({
@@ -52,6 +53,7 @@ export default function App() {
       <TouchableWithoutFeedback onPress={() => offKeyboard()}>
         <View style={styles.app}>
           <View style={styles.container}>
+            <Clima result={result} />
             <Formulario search={search} setSearch={setSearch} setRequest={setRequest} />
           </View>
         </View>
