@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
-  Text,
   View,
-  ScrollView,
   Keyboard,
   TouchableWithoutFeedback,
   Alert,
@@ -18,6 +16,9 @@ export default function App() {
   });
   const [requestClima, setRequest] = useState(false);
   const [result, setResult] = useState({});
+  const [bgcolor, setBgcolor] = useState('rgb(71, 149, 212)');
+
+  // destructuring state
   const { city, country } = search;
 
   useEffect(() => {
@@ -31,6 +32,17 @@ export default function App() {
           const result = await req.json();
           setResult(result);
           setRequest(false); // para que pueda realizar nuevamente una busqueda
+
+          // modifica los colores de fondo segun el clima
+          const { main } = result;
+          const current = parseInt(main.temp - 273.15); // convert to celsius
+          if (current < 10) {
+            setBgcolor('rgb(105,108,149)');
+          } else if (current >= 10 && current < 25) {
+            setBgcolor('rgb(71,149,212)');
+          } else {
+            setBgcolor('rgb(178,28,61)');
+          }
         } catch (error) {
           showAlert();
         }
@@ -48,10 +60,14 @@ export default function App() {
     Keyboard.dismiss();
   };
 
+  const bgColorApp = {
+    backgroundColor: bgcolor,
+  };
+
   return (
     <>
       <TouchableWithoutFeedback onPress={() => offKeyboard()}>
-        <View style={styles.app}>
+        <View style={[styles.app, bgColorApp]}>
           <View style={styles.container}>
             <Clima result={result} />
             <Formulario search={search} setSearch={setSearch} setRequest={setRequest} />
@@ -65,7 +81,6 @@ export default function App() {
 const styles = StyleSheet.create({
   app: {
     flex: 1,
-    backgroundColor: 'rgb(71, 149, 212)',
     justifyContent: 'center',
   },
   container: {
