@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,6 +10,11 @@ import {
 import Formulario from './components/Formulario';
 
 export default function App() {
+  const [search, setSearch] = useState({
+    city: '',
+    country: '',
+  });
+
   const offKeyboard = () => {
     Keyboard.dismiss();
   };
@@ -19,7 +24,7 @@ export default function App() {
       <TouchableWithoutFeedback onPress={() => offKeyboard()}>
         <View style={styles.app}>
           <View style={styles.container}>
-            <Formulario />
+            <Formulario search={search} setSearch={setSearch} />
           </View>
         </View>
       </TouchableWithoutFeedback>

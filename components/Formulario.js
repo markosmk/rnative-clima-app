@@ -6,10 +6,12 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   Animated,
+  Alert,
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
-const Formulario = () => {
+const Formulario = ({ search, setSearch }) => {
+  const { city, country } = search;
   const [animaBtn] = useState(new Animated.Value(1));
 
   const animaIn = () => {
@@ -30,19 +32,38 @@ const Formulario = () => {
     transform: [{ scale: animaBtn }],
   };
 
+  const getClima = () => {
+    if (country.trim() === '' || city.trim() === '') {
+      showAlert();
+      return;
+    }
+  };
+
+  const showAlert = () => {
+    Alert.alert('Error', 'Agrega una ciudad y un pais a la busqueda', [
+      { text: 'Entendido' },
+    ]);
+  };
+
   return (
     <>
       <View style={styles.form}>
         <View>
           <TextInput
+            value={city}
             style={styles.input}
+            onChangeText={(city) => setSearch({ ...search, city })}
             placeholder="Ciudad"
             placeholderTextColor="#666"
           />
         </View>
       </View>
       <View>
-        <Picker itemStyle={{ height: 120, backgroundColor: '#fff' }}>
+        <Picker
+          selectedValue={country}
+          onValueChange={(country) => setSearch({ ...search, country })}
+          itemStyle={{ height: 120, backgroundColor: '#fff' }}
+        >
           <Picker.Item label="-- Seleccione un pais --" value="" />
           <Picker.Item label="Estados Unidos" value="US" />
           <Picker.Item label="Mexico" value="MX" />
@@ -51,7 +72,11 @@ const Formulario = () => {
           <Picker.Item label="España" value="ES" />
         </Picker>
       </View>
-      <TouchableWithoutFeedback onPressIn={() => animaIn()} onPressOut={() => animaOut()}>
+      <TouchableWithoutFeedback
+        onPressIn={() => animaIn()}
+        onPressOut={() => animaOut()}
+        onPress={() => getClima()}
+      >
         <Animated.View style={[styles.btnSearch, styleAnima]}>
           <Text style={styles.btnText}>Buscar Clima</Text>
         </Animated.View>
