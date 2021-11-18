@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
-const Formulario = ({ search, setSearch }) => {
+const Formulario = ({ search, setSearch, setRequest }) => {
   const { city, country } = search;
   const [animaBtn] = useState(new Animated.Value(1));
 
@@ -18,6 +18,7 @@ const Formulario = ({ search, setSearch }) => {
     // agregando animacion al hacer click
     Animated.spring(animaBtn, {
       toValue: 0.9,
+      useNativeDriver: false,
     }).start();
   };
   const animaOut = () => {
@@ -25,6 +26,7 @@ const Formulario = ({ search, setSearch }) => {
       toValue: 1,
       friction: 4, // el rebote
       tension: 30,
+      useNativeDriver: false,
     }).start();
   };
 
@@ -37,6 +39,7 @@ const Formulario = ({ search, setSearch }) => {
       showAlert();
       return;
     }
+    setRequest(true);
   };
 
   const showAlert = () => {
